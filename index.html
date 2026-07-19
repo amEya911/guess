@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wordle Clone</title>
+  <meta name="description" content="A beautiful, responsive, and highly accessible Wordle clone built with HTML, CSS, and vanilla JavaScript.">
+  <link rel="stylesheet" href="style.css">
+  <script src="word.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- Screen reader announcer region -->
+  <div id="aria-announcer" class="sr-only" aria-live="polite" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;"></div>
+
+  <header>
+    <button id="help-btn" class="icon-btn" aria-label="How to play">❓</button>
+    <h1 class="header-title">Wordle</h1>
+    <button id="stats-btn" class="icon-btn" aria-label="Game statistics">📊</button>
+  </header>
+
+  <main>
+    <div class="board-container">
+      <div id="board" class="board" role="grid" aria-label="Wordle Grid"></div>
+    </div>
+
+    <div id="keyboard" class="keyboard" role="group" aria-label="Keyboard">
+      <!-- Keyboard layout generated dynamically by script.js -->
+    </div>
+  </main>
+
+  <div id="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- Help Dialog -->
+  <dialog id="help-dialog">
+    <div class="dialog-header">
+      <h2>How To Play</h2>
+      <button class="close-btn" id="close-help-btn" aria-label="Close dialog">&times;</button>
+    </div>
+    <div class="help-section">
+      <p>Guess the Wordle in the allowed number of tries.</p>
+      <ul>
+        <li>Each guess must be a valid combination of letters.</li>
+        <li>The letters must match the length of the secret word.</li>
+        <li>The color of the tiles will change to show how close your guess was.</li>
+      </ul>
+      
+      <div class="help-examples">
+        <h3>Examples</h3>
+        
+        <div class="example-row">
+          <div class="example-letters">
+            <div class="tile" data-state="correct">W</div>
+            <div class="tile">E</div>
+            <div class="tile">A</div>
+            <div class="tile">R</div>
+            <div class="tile">Y</div>
+          </div>
+          <p><strong>W</strong> is in the word and in the correct spot.</p>
+        </div>
+
+        <div class="example-row">
+          <div class="example-letters">
+            <div class="tile">P</div>
+            <div class="tile" data-state="present">I</div>
+            <div class="tile">L</div>
+            <div class="tile">O</div>
+            <div class="tile">T</div>
+          </div>
+          <p><strong>I</strong> is in the word but in the wrong spot.</p>
+        </div>
+
+        <div class="example-row">
+          <div class="example-letters">
+            <div class="tile">V</div>
+            <div class="tile">A</div>
+            <div class="tile">G</div>
+            <div class="tile" data-state="absent">U</div>
+            <div class="tile">E</div>
+          </div>
+          <p><strong>U</strong> is not in the word in any spot.</p>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Stats Dialog -->
+  <dialog id="stats-dialog">
+    <div class="dialog-header">
+      <h2 id="game-over-title">Game Over</h2>
+      <button class="close-btn" id="close-stats-btn" aria-label="Close dialog">&times;</button>
+    </div>
+    
+    <div class="game-over-container">
+      <div id="word-display" class="word-highlight"></div>
+      <div class="image-wrapper">
+        <img src="image.webp" alt="Secret Word Graphic" class="game-over-img">
+      </div>
+    </div>
+
+    <div class="dialog-footer">
+      <button id="reset-game-btn" class="btn-primary">Play Again</button>
+    </div>
+  </dialog>
+
+</body>
+</html>
