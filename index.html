@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wordle Clone</title>
-  <meta name="description" content="A beautiful, responsive, and highly accessible Wordle clone built with HTML, CSS, and vanilla JavaScript.">
+  <meta name="description"
+    content="A beautiful, responsive, and highly accessible Wordle clone built with HTML, CSS, and vanilla JavaScript.">
   <link rel="stylesheet" href="style.css">
   <script src="word.js"></script>
   <script src="script.js" defer></script>
 </head>
+
 <body>
 
   <!-- Screen reader announcer region -->
-  <div id="aria-announcer" class="sr-only" aria-live="polite" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;"></div>
+  <div id="aria-announcer" class="sr-only" aria-live="polite" aria-atomic="true"
+    style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
+  </div>
 
   <header>
     <button id="help-btn" class="icon-btn" aria-label="How to play">❓</button>
@@ -45,10 +50,10 @@
         <li>The letters must match the length of the secret word.</li>
         <li>The color of the tiles will change to show how close your guess was.</li>
       </ul>
-      
+
       <div class="help-examples">
         <h3>Examples</h3>
-        
+
         <div class="example-row">
           <div class="example-letters">
             <div class="tile" data-state="correct">W</div>
@@ -91,7 +96,7 @@
       <h2 id="game-over-title">Game Over</h2>
       <button class="close-btn" id="close-stats-btn" aria-label="Close dialog">&times;</button>
     </div>
-    
+
     <div class="game-over-container">
       <div id="word-display" class="word-highlight"></div>
       <div class="image-wrapper">
@@ -105,4 +110,5 @@
   </dialog>
 
 </body>
+
 </html>

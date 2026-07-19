@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameOver = false;
   let gameResult = null; // 'win', 'lose', or null
   let isAnimating = false;
+  let validWords = new Set();
+  let dictionaryLoaded = false;
 
   // 3. Stats Data Management
   const STATS_KEY = "wordle-clone-stats";
@@ -58,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     createGrid();
     buildKeyboard();
     setupEventListeners();
+    loadDictionary();
 
     // Show rules dialog on first visit
     const visitedBefore = localStorage.getItem("wordle-clone-visited");
@@ -172,6 +175,26 @@ document.addEventListener("DOMContentLoaded", () => {
   function submitGuess() {
     if (currentGuess.length !== wordLength) {
       showToast("Not enough letters");
+      
+      // Trigger shake animation on current row container
+      const activeRowEl = document.getElementById(`row-${currentRow}`);
+      if (activeRowEl) {
+        activeRowEl.classList.add("shake");
+        activeRowEl.addEventListener("animationend", () => {
+          activeRowEl.classList.remove("shake");
+        }, { once: true });
+      }
+      return;
+    }
+
+    if (!dictionaryLoaded) {
+      showToast("Loading dictionary...");
+      return;
+    }
+
+    // Validate guess against dictionary (fallback to allow if offline or loading failed)
+    if (validWords.size > 1 && !validWords.has(currentGuess)) {
+      showToast("No such word found");
       
       // Trigger shake animation on current row container
       const activeRowEl = document.getElementById(`row-${currentRow}`);
@@ -413,6 +436,29 @@ document.addEventListener("DOMContentLoaded", () => {
       stats.currentStreak = 0;
     }
     localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+  }
+
+  async function loadDictionary() {
+    try {
+      const response = await fetch("https://cdn.jsdelivr.net/npm/an-array-of-english-words/index.json");
+      const words = await response.json();
+      
+      words.forEach(word => {
+        if (word.length === 5 || word.length === 6) {
+          validWords.add(word.toUpperCase());
+        }
+      });
+      
+      // Always ensure the configured secret word is valid to avoid getting stuck
+      validWords.add(secretWord);
+      dictionaryLoaded = true;
+      console.log(`Loaded dictionary. Found ${validWords.size} words of lengths 5 or 6.`);
+    } catch (e) {
+      console.error("Failed to load dictionary from CDN", e);
+      // Fallback: load only the secret word and allow other guesses if offline to prevent game-breaking locks
+      validWords.add(secretWord);
+      dictionaryLoaded = true;
+    }
   }
 
   function updateGameOverUI(isWin) {
