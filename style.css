@@ -46,6 +46,9 @@ body {
   align-items: center;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* App Header */
@@ -74,6 +77,13 @@ header {
 .header-buttons {
   display: flex;
   gap: 0.5rem;
+}
+
+button {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .icon-btn {
@@ -192,6 +202,8 @@ main {
   flex-direction: column;
   gap: 8px;
   user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
   margin-top: 10px;
 }
 
@@ -200,6 +212,7 @@ main {
   justify-content: center;
   width: 100%;
   gap: 6px;
+  touch-action: manipulation;
 }
 
 .key {
@@ -219,6 +232,10 @@ main {
   text-transform: uppercase;
   transition: background-color 0.15s, transform 0.05s;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .key:hover {
