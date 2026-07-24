@@ -464,7 +464,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateGameOverUI(isWin) {
     const titleEl = document.getElementById("game-over-title");
     if (titleEl) {
-      titleEl.textContent = isWin ? "Victory!" : "Game Over";
+      titleEl.textContent = isWin ? "Good job Viya🥳" : "Not expected this from Viya😤";
     }
     
     const wordEl = document.getElementById("word-display");
