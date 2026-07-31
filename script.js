@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let isAnimating = false;
   let validWords = new Set();
   let dictionaryLoaded = false;
-  let jumpscareShown = false; // Track if jumpscare already triggered this session
 
   // 3. Stats Data Management
   const STATS_KEY = "wordle-clone-stats";
@@ -46,10 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeStatsBtn = document.getElementById("close-stats-btn");
 
   const resetGameBtn = document.getElementById("reset-game-btn");
-
-  // Jumpscare DOM elements
-  const jumpscareOverlay = document.getElementById("jumpscare-overlay");
-  const jumpscareAudio = document.getElementById("jumpscare-audio");
 
   // 5. Virtual Keyboard Key Layout Configuration
   const KEYBOARD_ROWS = [
@@ -269,20 +264,10 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (currentRow === maxGuesses - 1) {
         handleLoss();
       } else {
-        // Check if this is the first guess and it's wrong -> jumpscare
-        if (currentRow === 0 && !jumpscareShown) {
-          jumpscareShown = true;
-          triggerJumpscare(() => {
-            currentRow++;
-            currentGuess = "";
-            isAnimating = false;
-          });
-        } else {
-          // Normal: go to next row
-          currentRow++;
-          currentGuess = "";
-          isAnimating = false;
-        }
+        // Go to next row
+        currentRow++;
+        currentGuess = "";
+        isAnimating = false;
       }
     }, totalFlipTime);
   }
@@ -368,7 +353,6 @@ document.addEventListener("DOMContentLoaded", () => {
     gameOver = false;
     gameResult = null;
     isAnimating = false;
-    jumpscareShown = false;
 
     createGrid();
     buildKeyboard();
@@ -487,36 +471,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (wordEl) {
       wordEl.textContent = secretWord;
     }
-  }
-
-  // Jumpscare: show scary image + play sound for 3 seconds, then call onComplete
-  function triggerJumpscare(onComplete) {
-    if (!jumpscareOverlay) {
-      onComplete();
-      return;
-    }
-
-    // Show overlay instantly
-    jumpscareOverlay.classList.add("visible");
-
-    // Play scary sound
-    if (jumpscareAudio) {
-      jumpscareAudio.currentTime = 0;
-      jumpscareAudio.play().catch(() => {}); // Catch autoplay restrictions silently
-    }
-
-    // After 3 seconds, hide overlay and resume game
-    setTimeout(() => {
-      jumpscareOverlay.classList.remove("visible");
-
-      // Stop audio if still playing
-      if (jumpscareAudio) {
-        jumpscareAudio.pause();
-        jumpscareAudio.currentTime = 0;
-      }
-
-      if (onComplete) onComplete();
-    }, 3000);
   }
 
   // 16. Event Bindings
